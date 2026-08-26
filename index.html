@@ -472,50 +472,178 @@ button { font: inherit; }
 .bio-select button { border:1px solid var(--line); background:rgba(119,230,236,.03); color:#8fa6aa; padding:7px 10px; font-size:9px; letter-spacing:.08em; cursor:pointer; }
 .bio-select button.active, .bio-select button:hover { color:var(--cyan); border-color:rgba(119,230,236,.45); background:rgba(119,230,236,.08); }
 @keyframes bioSweep { to { transform:translateX(100%); } }
-.survivor-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
+
+
+/* V6 — SURVIVOR HOLOGRAPHIC CARDS */
+#survivors .page-card{padding:28px;}
+#survivors .survivor-grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;margin-top:26px!important;}
+#survivors .id-card{
+  --sv:#7ee6ec;
+  --sv2:#3ca8d4;
+  position:relative;
+  min-height:520px;
+  padding:0;
+  overflow:hidden;
+  border:0;
+  border-radius:4px;
+  background:transparent;
+  box-shadow:none;
+  transform:translateZ(0);
+  transition:transform .35s ease,filter .35s ease;
 }
-.id-card {
-  position: relative;
-  overflow: hidden;
-  min-height: 270px;
-  padding: 18px;
+#survivors .id-card.sv-warn{--sv:#f2bd57;--sv2:#ff7a5c;}
+#survivors .id-card.sv-blue{--sv:#7ee6ec;--sv2:#5e86ff;}
+#survivors .id-card::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  z-index:0;
+  transform:none;
+  color:transparent;
+  background:linear-gradient(135deg,var(--sv),transparent 38%,var(--sv2));
+  opacity:.75;
+  animation:svBorderPulse 2.4s ease-in-out infinite alternate;
+}
+#survivors .id-card::after{display:none;}
+@keyframes svBorderPulse{from{opacity:.38}to{opacity:.9}}
+#survivors .id-card:hover,#survivors .id-card:focus-visible{
+  transform:perspective(900px) rotateY(-3deg) translateY(-7px);
+  border-color:transparent;
+  box-shadow:none;
+  outline:none;
+}
+.sv-card-body{
+  position:relative;
+  z-index:1;
+  height:100%;
+  margin:1px;
+  overflow:hidden;
+  border:1px solid rgba(126,230,236,.08);
+  background:#04080b;
+}
+.sv-card-body::before{
+  content:"";
+  position:absolute;
+  left:0;right:0;
+  height:2px;
+  top:-3px;
+  z-index:12;
+  pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(126,230,236,.35),var(--sv),rgba(126,230,236,.35),transparent);
+  box-shadow:0 0 8px color-mix(in srgb,var(--sv) 70%,transparent);
+  animation:svScan 4.2s linear infinite;
+}
+@keyframes svScan{to{top:calc(100% + 3px)}}
+.sv-visual{
+  position:relative;
+  height:238px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   background:
-    linear-gradient(135deg, rgba(15,40,45,.58), rgba(3,10,12,.92)),
-    repeating-linear-gradient(90deg, transparent 0 22px, rgba(119,230,236,.025) 23px);
+    radial-gradient(circle at 50% 52%, color-mix(in srgb,var(--sv) 18%,transparent), transparent 35%),
+    linear-gradient(135deg,#02090d,#07161b 58%,#020709);
 }
-.id-card::before {
-  content: "SURVIVOR IDENTIFICATION";
-  position: absolute;
-  right: -28px;
-  top: 24px;
-  transform: rotate(90deg);
-  color: rgba(119,230,236,.15);
-  font-size: 9px;
-  letter-spacing: .15em;
+.sv-visual::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(126,230,236,.045) 2px 4px);
+  opacity:.75;
+  pointer-events:none;
 }
-.id-head {
-  display: flex; justify-content: space-between; align-items: center;
-  padding-bottom: 12px; border-bottom: 1px solid var(--line);
-  font-size: 9px; letter-spacing: .13em; color: #8ca8ad;
+.sv-visual::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,transparent 0 48%,rgba(255,255,255,.06) 50%,transparent 52%);
+  transform:translateX(-130%);
+  animation:svSheen 8s ease-in-out infinite;
 }
-.id-status { color: var(--cyan); }
-.id-body { display: grid; grid-template-columns: 95px 1fr; gap: 18px; padding-top: 18px; }
-.avatar {
-  height: 125px;
-  border: 1px solid var(--line-bright);
-  background:
-    linear-gradient(135deg, rgba(119,230,236,.12), transparent),
-    repeating-linear-gradient(0deg, rgba(119,230,236,.05) 0 1px, transparent 1px 6px);
-  display: grid; place-items: center;
-  color: rgba(119,230,236,.45);
-  font-size: 32px;
+@keyframes svSheen{0%,72%,100%{transform:translateX(-130%)}84%{transform:translateX(130%)}}
+.sv-corner{position:absolute;width:18px;height:18px;z-index:5;border-color:var(--sv);}
+.sv-corner.tl{top:10px;left:10px;border-top:2px solid var(--sv);border-left:2px solid var(--sv)}
+.sv-corner.tr{top:10px;right:10px;border-top:2px solid var(--sv);border-right:2px solid var(--sv)}
+.sv-corner.bl{bottom:10px;left:10px;border-bottom:2px solid var(--sv);border-left:2px solid var(--sv)}
+.sv-corner.br{bottom:10px;right:10px;border-bottom:2px solid var(--sv);border-right:2px solid var(--sv)}
+.sv-status{
+  position:absolute;
+  top:12px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:6;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:5px 11px;
+  border:1px solid color-mix(in srgb,var(--sv) 70%,transparent);
+  background:rgba(1,6,8,.82);
+  color:var(--sv);
+  font-family:"Kode Mono",monospace;
+  font-size:9px;
+  letter-spacing:.18em;
+  white-space:nowrap;
 }
-.id-name { color: #c9f3f5; font-size: 18px; letter-spacing: .08em; }
-.id-meta { margin-top: 11px; color: #7f999e; font-size: 9px; line-height: 2; }
-.id-code { margin-top: 18px; color: var(--cyan); font-size: 11px; letter-spacing: .08em; }
+.sv-blink{width:6px;height:6px;border-radius:50%;background:var(--sv);box-shadow:0 0 10px var(--sv);animation:svBlink 1.25s ease-in-out infinite}
+@keyframes svBlink{50%{opacity:.22}}
+.sv-subject{
+  position:relative;
+  z-index:4;
+  width:122px;
+  height:142px;
+  display:grid;
+  place-items:center;
+  color:color-mix(in srgb,var(--sv) 75%,#eaffff);
+  font-family:"Kode Mono",monospace;
+  font-size:56px;
+  letter-spacing:-.06em;
+  text-shadow:0 0 16px color-mix(in srgb,var(--sv) 70%,transparent),2px 0 0 rgba(255,0,80,.12),-2px 0 0 rgba(0,180,255,.12);
+  filter:drop-shadow(0 0 18px color-mix(in srgb,var(--sv) 55%,transparent));
+  animation:svGlitch 10s steps(1,end) infinite;
+}
+.sv-subject::before{
+  content:"";
+  position:absolute;
+  inset:9px 18px 7px;
+  border:1px solid color-mix(in srgb,var(--sv) 40%,transparent);
+  border-radius:50% 50% 38% 38%;
+  box-shadow:inset 0 0 20px color-mix(in srgb,var(--sv) 9%,transparent);
+}
+.sv-subject::after{
+  content:"SUBJECT";
+  position:absolute;
+  bottom:-18px;
+  font-size:8px;
+  letter-spacing:.25em;
+  color:color-mix(in srgb,var(--sv) 70%,#789);
+}
+@keyframes svGlitch{0%,90%,100%{transform:translate(0)}91%{transform:translate(-4px,1px)}92%{transform:translate(3px,-1px)}93%{transform:translate(0)}96%{transform:translate(2px,1px)}}
+.sv-info{padding:18px 18px 20px;border-top:1px solid rgba(126,230,236,.08);}
+.sv-sys{color:var(--sv);font-size:9px;letter-spacing:.18em;margin-bottom:8px;text-transform:uppercase;}
+.sv-name{color:#e7fbfc;font-size:18px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;animation:svTextGlitch 12s steps(1,end) infinite;}
+@keyframes svTextGlitch{0%,86%,100%{text-shadow:none}87%{text-shadow:2px 0 0 rgba(255,77,99,.75),-2px 0 0 rgba(126,230,236,.55)}88%{text-shadow:none}90%{text-shadow:-2px 0 0 rgba(255,77,99,.45)}91%{text-shadow:none}}
+.sv-desc{min-height:34px;color:#7d989e;font-size:9px;line-height:1.75;letter-spacing:.06em;}
+.sv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 14px;}
+.sv-stat{padding:9px 7px;border:1px solid rgba(126,230,236,.1);background:color-mix(in srgb,var(--sv) 4%,transparent);text-align:center;}
+.sv-stat b{display:block;color:var(--sv);font-size:14px;letter-spacing:.04em;margin-bottom:4px;}
+.sv-stat span{display:block;color:#61797e;font-size:8px;letter-spacing:.13em;}
+.sv-open{
+  width:100%;
+  padding:11px;
+  border:1px solid color-mix(in srgb,var(--sv) 75%,transparent);
+  background:color-mix(in srgb,var(--sv) 6%,transparent);
+  color:var(--sv);
+  font:700 10px "Kode Mono",monospace;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  pointer-events:none;
+  transition:.2s ease;
+}
+.id-card:hover .sv-open{background:color-mix(in srgb,var(--sv) 13%,transparent);box-shadow:0 0 18px color-mix(in srgb,var(--sv) 18%,transparent);}
+#survivors .id-card .id-name,#survivors .id-card .id-meta,#survivors .id-card .id-code{display:none;}
+@media(max-width:760px){#survivors .survivor-grid{grid-template-columns:1fr}#survivors .id-card{min-height:500px}}
+
 
 .log-entry {
   padding: 17px 0;
@@ -870,6 +998,118 @@ button { font: inherit; }
 .ares-mark .ares-mark-icon{width:66px;height:66px;margin:0 14px 0 0;}
 .ares-mark p{margin:0;color:#94b3b9;font-size:9px;letter-spacing:.2em;line-height:1.7;text-align:left;}
 .ares-mark small{margin:0;color:#6e8a91;font-size:8px;letter-spacing:.14em;text-align:left;}
+
+/* Compact unified ARES survivor cards */
+#survivors .survivor-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:18px!important;max-width:980px;}
+#survivors .id-card{--sv:#7ee6ec!important;--sv2:#3ca8d4!important;min-height:360px!important;}
+#survivors .id-card.sv-blue,#survivors .id-card.sv-warn{--sv:#7ee6ec!important;--sv2:#3ca8d4!important;}
+#survivors .sv-card-body{min-height:358px!important;}
+#survivors .sv-visual{height:150px!important;}
+#survivors .sv-subject{width:88px!important;height:92px!important;font-size:42px!important;}
+#survivors .sv-subject::before{inset:6px 12px 5px!important;}
+#survivors .sv-subject::after{bottom:-14px!important;font-size:7px!important;}
+#survivors .sv-status{top:9px!important;padding:4px 9px!important;font-size:8px!important;gap:6px!important;}
+#survivors .sv-corner{width:14px!important;height:14px!important;}
+#survivors .sv-corner.tl{top:8px!important;left:8px!important}.sv-corner.tr{top:8px!important;right:8px!important}.sv-corner.bl{bottom:8px!important;left:8px!important}.sv-corner.br{bottom:8px!important;right:8px!important}
+#survivors .sv-info{padding:12px 13px 13px!important;}
+#survivors .sv-sys{font-size:8px!important;margin-bottom:4px!important;}
+#survivors .sv-name{font-size:14px!important;margin-bottom:5px!important;}
+#survivors .sv-desc{font-size:8px!important;line-height:1.45!important;margin-bottom:9px!important;}
+#survivors .sv-stats{gap:5px!important;margin-bottom:10px!important;}
+#survivors .sv-stat{padding:6px 3px!important;}
+#survivors .sv-stat b{font-size:11px!important;}
+#survivors .sv-stat span{font-size:7px!important;}
+#survivors .sv-open{padding:8px!important;font-size:8px!important;letter-spacing:.13em!important;}
+#survivors .id-card:hover,#survivors .id-card:focus-visible{transform:perspective(900px) rotateY(-2deg) translateY(-4px)!important;}
+@media(max-width:900px){#survivors .survivor-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:600px){#survivors .survivor-grid{grid-template-columns:1fr;}#survivors .id-card{min-height:350px!important;}}
+
+/* Vertical compact survivor cards */
+#survivors .survivor-grid{
+  grid-template-columns:repeat(3,220px)!important;
+  justify-content:center!important;
+  gap:18px!important;
+  max-width:760px!important;
+}
+#survivors .id-card{width:220px!important;min-height:385px!important;}
+#survivors .sv-card-body{min-height:383px!important;}
+#survivors .sv-visual{height:168px!important;}
+#survivors .sv-subject{width:92px!important;height:96px!important;font-size:44px!important;}
+#survivors .sv-info{padding:13px!important;}
+@media(max-width:760px){#survivors .survivor-grid{grid-template-columns:repeat(2,220px)!important;max-width:458px!important;}}
+@media(max-width:520px){#survivors .survivor-grid{grid-template-columns:220px!important;max-width:220px!important;}}
+
+
+/* FINAL survivor card layout fix: three vertical cards in one row */
+#survivors .survivor-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,220px)!important;
+  width:100%!important;
+  max-width:696px!important;
+  margin:24px auto 0!important;
+  justify-content:center!important;
+  align-items:start!important;
+  gap:18px!important;
+}
+#survivors .id-card{width:220px!important;}
+@media(max-width:760px){#survivors .survivor-grid{grid-template-columns:repeat(2,220px)!important;max-width:458px!important;}}
+@media(max-width:520px){#survivors .survivor-grid{grid-template-columns:220px!important;max-width:220px!important;}}
+
+/* FINAL survivor fit + remove oval subject frame */
+#survivors .survivor-grid{
+  width:100%!important;
+  max-width:1120px!important;
+  grid-template-columns:repeat(3,220px)!important;
+  justify-content:space-between!important;
+  gap:24px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+#survivors .id-card{width:220px!important;min-height:383px!important;}
+#survivors .sv-card-body{min-height:381px!important;}
+#survivors .sv-visual{height:170px!important;}
+#survivors .sv-subject{width:auto!important;height:auto!important;font-size:50px!important;line-height:1!important;padding:0!important;}
+#survivors .sv-subject::before{content:none!important;display:none!important;}
+#survivors .sv-subject::after{bottom:-18px!important;}
+@media(max-width:900px){#survivors .survivor-grid{grid-template-columns:repeat(2,220px)!important;justify-content:center!important;max-width:464px!important;gap:24px!important;}}
+@media(max-width:560px){#survivors .survivor-grid{grid-template-columns:220px!important;max-width:220px!important;gap:18px!important;}}
+
+
+/* Responsive proportional survivor layout: cards and spacing scale together */
+#survivors .survivor-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  width:min(88vw,900px)!important;
+  max-width:none!important;
+  margin:24px auto 0!important;
+  gap:clamp(12px,2vw,24px)!important;
+  justify-content:stretch!important;
+  align-items:start!important;
+}
+#survivors .id-card{
+  width:100%!important;
+  min-height:0!important;
+}
+#survivors .sv-card-body{
+  min-height:0!important;
+}
+#survivors .sv-visual{
+  height:clamp(132px,16vw,170px)!important;
+}
+@media(max-width:760px){
+  #survivors .survivor-grid{
+    width:min(90vw,520px)!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:clamp(12px,3vw,20px)!important;
+  }
+}
+@media(max-width:520px){
+  #survivors .survivor-grid{
+    width:min(82vw,320px)!important;
+    grid-template-columns:1fr!important;
+  }
+}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
@@ -1003,7 +1243,7 @@ button { font: inherit; }
                 <div class="signal-profile-data">
                   <div class="signal-row"><span>ID</span><b id="mapSignalId">KOR-SV-001</b></div>
                   <div class="signal-row"><span>STATUS</span><b id="mapSignalStatus" class="cyan-text">ALIVE</b></div>
-                  <div class="signal-row"><span>NAME</span><b id="mapSignalName">SURVIVOR 001</b></div>
+                  <div class="signal-row"><span>NAME</span><b id="mapSignalName">SURVIVOR 01</b></div>
                   <div class="signal-row"><span>AGE</span><b id="mapSignalAge">—</b></div>
                   <div class="signal-row"><span>ROLE</span><b id="mapSignalRole">REGISTERED</b></div>
                   <div class="signal-row"><span>LAST SEEN</span><b id="mapSignalLast">CENTRAL ZONE</b></div>
@@ -1050,19 +1290,25 @@ button { font: inherit; }
       <section class="page" id="survivors">
         <div class="page-card panel">
           <h1 class="big-title">SURVIVORS</h1>
-          <p class="muted">생존자 등록증 형식의 식별 데이터입니다. 캐릭터 이미지와 실제 설정은 이후 교체하면 됩니다.</p>
+          <p class="muted">ARES NETWORK가 수집한 생존자 식별 데이터입니다. 프로필 이미지는 이후 실제 캐릭터 이미지로 교체할 수 있습니다.</p>
           <div class="survivor-grid" style="margin-top:24px">
             <article class="id-card panel" data-survivor="KOR-SV-001" tabindex="0" role="button" aria-label="KOR-SV-001 생존자 카드 열기">
-              <div class="id-head"><span>ARES NETWORK / ID</span><span class="id-status">● ACTIVE</span></div>
-              <div class="id-body"><div class="avatar">01</div><div><div class="id-name">SURVIVOR 001</div><div class="id-meta">STATUS: ACTIVE<br>LOCATION: CENTRAL ZONE<br>LAST SIGNAL: 02:14:08</div><div class="id-code">KOR-SV-001</div></div></div>
+              <div class="sv-card-body">
+                <div class="sv-visual"><i class="sv-corner tl"></i><i class="sv-corner tr"></i><i class="sv-corner bl"></i><i class="sv-corner br"></i><div class="sv-status"><span class="sv-blink"></span>SIGNAL ACTIVE</div><div class="sv-subject">01</div></div>
+                <div class="sv-info"><div class="sv-sys">// SURVIVOR 01</div><div class="sv-name">SURVIVOR 01</div><div class="sv-desc">REGISTERED SURVIVOR // NETWORK LINK ACTIVE</div><div class="sv-stats"><div class="sv-stat"><b>86%</b><span>SIGNAL</span></div><div class="sv-stat"><b>ACTIVE</b><span>STATUS</span></div><div class="sv-stat"><b>01</b><span>SECTOR</span></div></div><div class="sv-open">⟶ ACCESS SURVIVOR PROFILE</div></div>
+              </div>
             </article>
             <article class="id-card panel" data-survivor="KOR-SV-002" tabindex="0" role="button" aria-label="KOR-SV-002 생존자 카드 열기">
-              <div class="id-head"><span>ARES NETWORK / ID</span><span class="id-status">● ACTIVE</span></div>
-              <div class="id-body"><div class="avatar">02</div><div><div class="id-name">SURVIVOR 002</div><div class="id-meta">STATUS: ACTIVE<br>LOCATION: NORTH ZONE<br>LAST SIGNAL: 01:47:32</div><div class="id-code">KOR-SV-002</div></div></div>
+              <div class="sv-card-body">
+                <div class="sv-visual"><i class="sv-corner tl"></i><i class="sv-corner tr"></i><i class="sv-corner bl"></i><i class="sv-corner br"></i><div class="sv-status"><span class="sv-blink"></span>SIGNAL ACTIVE</div><div class="sv-subject">02</div></div>
+                <div class="sv-info"><div class="sv-sys">// SURVIVOR 02</div><div class="sv-name">SURVIVOR 02</div><div class="sv-desc">REGISTERED SURVIVOR // NETWORK LINK ACTIVE</div><div class="sv-stats"><div class="sv-stat"><b>74%</b><span>SIGNAL</span></div><div class="sv-stat"><b>ACTIVE</b><span>STATUS</span></div><div class="sv-stat"><b>02</b><span>SECTOR</span></div></div><div class="sv-open">⟶ ACCESS SURVIVOR PROFILE</div></div>
+              </div>
             </article>
             <article class="id-card panel" data-survivor="KOR-SV-003" tabindex="0" role="button" aria-label="KOR-SV-003 생존자 카드 열기">
-              <div class="id-head"><span>ARES NETWORK / ID</span><span class="id-status">● ACTIVE</span></div>
-              <div class="id-body"><div class="avatar">03</div><div><div class="id-name">SURVIVOR 003</div><div class="id-meta">STATUS: ACTIVE<br>LOCATION: SOUTH ZONE<br>LAST SIGNAL: 01:22:19</div><div class="id-code">KOR-SV-003</div></div></div>
+              <div class="sv-card-body">
+                <div class="sv-visual"><i class="sv-corner tl"></i><i class="sv-corner tr"></i><i class="sv-corner bl"></i><i class="sv-corner br"></i><div class="sv-status"><span class="sv-blink"></span>SIGNAL ACTIVE</div><div class="sv-subject">03</div></div>
+                <div class="sv-info"><div class="sv-sys">// SURVIVOR 03</div><div class="sv-name">SURVIVOR 03</div><div class="sv-desc">REGISTERED SURVIVOR // NETWORK LINK ACTIVE</div><div class="sv-stats"><div class="sv-stat"><b>41%</b><span>SIGNAL</span></div><div class="sv-stat"><b>ACTIVE</b><span>STATUS</span></div><div class="sv-stat"><b>03</b><span>SECTOR</span></div></div><div class="sv-open">⟶ ACCESS SURVIVOR PROFILE</div></div>
+              </div>
             </article>
           </div>
         </div>
@@ -1236,28 +1482,46 @@ function showAccessDenied(label){
 }
 
 const survivorData = {
-  'KOR-SV-001': {name:'SURVIVOR 001', photo:'01', status:'ACTIVE', location:'CENTRAL ZONE', signal:'02:14:08', role:'REGISTERED SURVIVOR', note:'중앙 구역에서 안정적인 신호가 유지되고 있습니다. 지도상의 생존자 마커를 눌러도 동일한 식별 데이터에 접근할 수 있습니다.'},
-  'KOR-SV-002': {name:'SURVIVOR 002', photo:'02', status:'ACTIVE', location:'NORTH ZONE', signal:'01:47:32', role:'REGISTERED SURVIVOR', note:'북부 구역 이동 기록이 확인되었습니다. 상세 프로필과 실제 캐릭터 설정은 이 창에 그대로 확장할 수 있습니다.'},
-  'KOR-SV-003': {name:'SURVIVOR 003', photo:'03', status:'ACTIVE', location:'SOUTH ZONE', signal:'01:22:19', role:'REGISTERED SURVIVOR', note:'남부 구역에서 마지막 신호가 감지되었습니다. 캐릭터 이미지가 준비되면 현재 번호 영역을 프로필 이미지로 교체하면 됩니다.'}
+  'KOR-SV-001': {name:'SURVIVOR 01', photo:'01', status:'ACTIVE', location:'CENTRAL ZONE', signal:'LIVE', role:'REGISTERED SURVIVOR', note:'중앙 구역에서 안정적인 신호가 유지되고 있습니다. 지도상의 생존자 마커를 눌러도 동일한 식별 데이터에 접근할 수 있습니다.'},
+  'KOR-SV-002': {name:'SURVIVOR 02', photo:'02', status:'ACTIVE', location:'NORTH ZONE', signal:'LIVE', role:'REGISTERED SURVIVOR', note:'북부 구역 이동 기록이 확인되었습니다. 상세 프로필과 실제 캐릭터 설정은 이 창에 그대로 확장할 수 있습니다.'},
+  'KOR-SV-003': {name:'SURVIVOR 03', photo:'03', status:'ACTIVE', location:'SOUTH ZONE', signal:'LIVE', role:'REGISTERED SURVIVOR', note:'남부 구역에서 마지막 신호가 감지되었습니다. 캐릭터 이미지가 준비되면 현재 번호 영역을 프로필 이미지로 교체하면 됩니다.'}
 };
 const modal = document.getElementById('survivorModal');
 const modalName = document.getElementById('modalName');
 const modalPhoto = document.getElementById('modalPhoto');
 const modalData = document.getElementById('modalData');
+let activeSurvivorCode = null;
+
+function getLiveSignalTime(){
+  return new Intl.DateTimeFormat('en-GB', {
+    timeZone:'Asia/Seoul', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+  }).format(new Date());
+}
+
+function updateLastSignal(){
+  const liveSignal = document.getElementById('lastSignalValue');
+  if(liveSignal && activeSurvivorCode){
+    liveSignal.textContent = getLiveSignalTime();
+  }
+}
+
+setInterval(updateLastSignal, 1000);
+
 function openSurvivor(code) {
   const d = survivorData[code]; if (!d) return;
+  activeSurvivorCode = code;
   playUISound(survivorOpenSound, 0.48);
   modalName.textContent = d.name; modalPhoto.textContent = d.photo;
   modalData.innerHTML = `
     <div class="modal-data-row"><span>IDENTIFICATION</span><b>${code}</b></div>
     <div class="modal-data-row"><span>STATUS</span><b style="color:var(--cyan)">● ${d.status}</b></div>
     <div class="modal-data-row"><span>LOCATION</span><b>${d.location}</b></div>
-    <div class="modal-data-row"><span>LAST SIGNAL</span><b>${d.signal}</b></div>
+    <div class="modal-data-row"><span>LAST SIGNAL</span><b id="lastSignalValue" style="color:var(--cyan)">${getLiveSignalTime()}</b></div>
     <div class="modal-data-row"><span>CLASSIFICATION</span><b>${d.role}</b></div>
     <div class="modal-note">${d.note}</div>`;
   modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
 }
-function closeSurvivor() { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+function closeSurvivor() { activeSurvivorCode = null; modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
 document.querySelectorAll('[data-survivor]').forEach(el => {
   el.addEventListener('click', () => openSurvivor(el.dataset.survivor));
   el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSurvivor(el.dataset.survivor); } });
@@ -1305,9 +1569,9 @@ bioButtons.forEach(btn=>btn.addEventListener('click',()=>{
 
 /* Map command center live panel */
 const mapSurvivorMeta = {
-  'KOR-SV-001': {name:'SURVIVOR 001', age:'—', role:'REGISTERED', last:'CENTRAL ZONE', rate:82, temp:'36.7°C', oxy:'98%', avatar:'01'},
-  'KOR-SV-002': {name:'SURVIVOR 002', age:'—', role:'REGISTERED', last:'NORTH ZONE', rate:96, temp:'37.1°C', oxy:'96%', avatar:'02'},
-  'KOR-SV-003': {name:'SURVIVOR 003', age:'—', role:'REGISTERED', last:'SOUTH ZONE', rate:74, temp:'36.5°C', oxy:'99%', avatar:'03'}
+  'KOR-SV-001': {name:'SURVIVOR 01', age:'—', role:'REGISTERED', last:'CENTRAL ZONE', rate:82, temp:'36.7°C', oxy:'98%', avatar:'01'},
+  'KOR-SV-002': {name:'SURVIVOR 02', age:'—', role:'REGISTERED', last:'NORTH ZONE', rate:96, temp:'37.1°C', oxy:'96%', avatar:'02'},
+  'KOR-SV-003': {name:'SURVIVOR 03', age:'—', role:'REGISTERED', last:'SOUTH ZONE', rate:74, temp:'36.5°C', oxy:'99%', avatar:'03'}
 };
 let mapSignalRate = 82;
 function updateMapSignal(code){
