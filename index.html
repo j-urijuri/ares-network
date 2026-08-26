@@ -1325,12 +1325,18 @@ button { font: inherit; }
       </section>
 
       <section class="page" id="broadcast">
-        <div class="page-card panel">
-          <h1 class="big-title">BROADCAST</h1>
-          <p class="muted">긴급 방송, 라디오 메시지, 생존자 간 통신 기록이 표시될 메뉴입니다.</p>
-          <div class="bottom-log">CHANNEL 01 · <b>STANDBY FOR INCOMING TRANSMISSION</b></div>
-        </div>
-      </section>
+  <div class="broadcast-shell">
+    <div class="bc-header"><div><div class="bc-kicker"><span></span> LIVE TRANSMISSION</div><h2>EMERGENCY BROADCAST</h2></div><div class="bc-meta"><span>CH-03 / SECURE</span><span class="critical">PRIORITY: CRITICAL</span><span id="bc-clock">--:--:--</span></div></div>
+    <div class="bc-main">
+      <div class="bc-signal"><div class="bc-signal-title">AUDIO STREAM <b>LIVE</b></div><div class="natural-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="bc-text"><div class="bc-label">// ACTIVE TRANSCRIPT</div><p>서울 전역 위험 구역 확산이 확인되었습니다. 시민들은 즉시 지정된 안전 구역으로 대피하십시오.</p><p>ARES NETWORK는 현재 생존자 신호를 추적 중입니다. 통신이 불안정할 경우 안전 채널을 유지하십시오.</p></div>
+      <div class="bc-data"><span>SOURCE <b>ARES CENTRAL</b></span><span>ENCRYPTION <b>AES-7</b></span><span>SIGNAL <b>98%</b></span><span>STATUS <b>ACTIVE</b></span></div>
+      <div class="bc-actions"><button>PLAYBACK</button><button>TRANSCRIPT</button><button>SYSTEM LOG</button></div>
+    </div>
+    <div class="archive-head"><span>TRANSMISSION ARCHIVE</span><b>TOTAL LOGS: 06</b></div>
+    <div class="archive-table"><div class="archive-row head"><span>TIME</span><span>TITLE</span><span>PRIORITY</span><span>STATUS</span></div><div class="archive-row"><span>03:42:18</span><span>EMERGENCY BROADCAST</span><span class="critical">CRITICAL</span><span class="live">● LIVE</span></div><div class="archive-row"><span>02:31:04</span><span>SIGNAL INTERRUPTION</span><span>HIGH</span><span>ARCHIVED</span></div><div class="archive-row"><span>01:17:22</span><span>EVACUATION ORDER</span><span>MEDIUM</span><span>ARCHIVED</span></div><div class="archive-row"><span>00:43:51</span><span>UNKNOWN TRANSMISSION</span><span>????</span><span>CLASSIFIED</span></div></div>
+  </div>
+</section>
 
       <section class="page" id="archive">
         <div class="archive-console">
@@ -1599,5 +1605,9 @@ const clock = document.getElementById('clock');
 function updateClock() { const now = new Date(); clock.textContent = now.toLocaleTimeString('en-GB', {hour12:false}); }
 updateClock(); setInterval(updateClock, 1000);
 </script>
-</body>
+
+<style id="broadcast-command-center-fix">
+#broadcast{padding:0;overflow:auto}.broadcast-shell{width:min(100%,1120px);margin:0 auto;padding:18px 22px 32px;color:#b8cbd0}.bc-header,.bc-meta,.bc-data,.bc-actions,.archive-head,.archive-row{display:flex;align-items:center}.bc-header{justify-content:space-between;border-bottom:1px solid rgba(126,217,226,.22);padding:12px 0 16px;gap:20px}.bc-kicker{font-size:10px;letter-spacing:.18em;color:#7ee6ec}.bc-kicker span{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff6b63;box-shadow:0 0 10px rgba(255,107,99,.7);margin-right:8px;animation:bcblink 1s infinite}.bc-header h2{margin:7px 0 0;font-size:26px;letter-spacing:.08em;color:#d8f7f8}.bc-meta{gap:14px;font-size:10px;letter-spacing:.08em;color:#70868b}.critical{color:#ff8a84!important}.bc-main{border:1px solid rgba(126,217,226,.18);background:rgba(5,14,17,.72);margin-top:16px;padding:18px}.bc-signal-title{font-size:10px;letter-spacing:.12em;color:#789096}.bc-signal-title b{margin-left:10px;color:#ff8a84}.natural-wave{height:74px;margin:10px 0 14px;display:flex;align-items:center;gap:3px;border-top:1px solid rgba(126,217,226,.08);border-bottom:1px solid rgba(126,217,226,.08);padding:0 6px;overflow:hidden}.natural-wave i{display:block;flex:1;max-width:7px;height:12px;background:linear-gradient(to bottom,rgba(126,230,236,.25),#8deef2,rgba(126,230,236,.25));transform-origin:center;animation:voice 2.8s ease-in-out infinite alternate}.natural-wave i:nth-child(3n){height:28px;animation-duration:3.4s}.natural-wave i:nth-child(4n){height:44px;animation-duration:2.3s}.natural-wave i:nth-child(5n){height:20px;animation-duration:3.8s}.natural-wave i:nth-child(7n){height:56px;animation-duration:2.6s}.bc-label{font-size:9px;letter-spacing:.16em;color:#7ee6ec;margin-bottom:10px}.bc-text p{font-size:13px;line-height:1.8;color:#a8b9bd;margin:5px 0}.bc-data{flex-wrap:wrap;gap:12px 26px;border-top:1px solid rgba(126,217,226,.12);margin-top:16px;padding-top:12px;font-size:9px;letter-spacing:.1em;color:#667d82}.bc-data b{color:#c9f7f8;margin-left:6px}.bc-actions{gap:8px;margin-top:16px}.bc-actions button{background:rgba(126,217,226,.05);border:1px solid rgba(126,217,226,.22);color:#8deef2;padding:8px 12px;font:inherit;font-size:9px;letter-spacing:.12em}.archive-head{justify-content:space-between;margin-top:22px;padding:10px 0;border-bottom:1px solid rgba(126,217,226,.18);font-size:10px;letter-spacing:.15em;color:#d1f4f5}.archive-head b{font-weight:400;color:#667d82}.archive-row{display:grid;grid-template-columns:120px 1fr 110px 110px;gap:12px;padding:12px 8px;border-bottom:1px solid rgba(126,217,226,.09);font-size:10px;letter-spacing:.08em;color:#90a5aa}.archive-row.head{color:#5d757a;font-size:8px}.archive-row span:nth-child(2){color:#c8e8ea}.live{color:#7ee6ec}@keyframes voice{0%{transform:scaleY(.45);opacity:.45}45%{transform:scaleY(1.4);opacity:1}100%{transform:scaleY(.7);opacity:.75}}@keyframes bcblink{50%{opacity:.25}}@media(max-width:760px){.broadcast-shell{padding:14px}.bc-header{align-items:flex-start;flex-direction:column}.bc-meta{flex-wrap:wrap}.bc-header h2{font-size:21px}.archive-row{grid-template-columns:78px 1fr 70px;gap:8px}.archive-row span:nth-child(4){display:none}.bc-data{display:grid;grid-template-columns:1fr 1fr}.bc-actions button{flex:1;padding:8px 4px;font-size:8px}}
+</style>
+<script>setInterval(()=>{const d=new Date();const el=document.getElementById('bc-clock');if(el)el.textContent=d.toLocaleTimeString('ko-KR',{hour12:false});},1000);</script></body>
 </html>
