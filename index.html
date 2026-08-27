@@ -1230,8 +1230,68 @@ button { font: inherit; }
 }
 </style>
 
+
+<style id="ares-boot-critical">
+/* Critical boot styles live in the head so the very first paint is already formatted. */
+html,body{background:#02090b!important;}
+body.ares-booting{overflow:hidden;}
+body.ares-booting .app{visibility:hidden!important;}
+#aresBoot,#aresBoot *{box-sizing:border-box;}
+#aresBoot{
+  position:fixed;inset:0;z-index:2147483647;
+  display:flex;align-items:center;justify-content:center;
+  padding:28px;background:rgba(1,7,9,.985);color:#c7d9dc;
+  opacity:1;visibility:visible;
+  transition:opacity .8s ease,visibility .8s ease;
+  font-family:"IBM Plex Mono",monospace;line-height:1.35;
+}
+#aresBoot.is-hidden{opacity:0;visibility:hidden;pointer-events:none;}
+#aresBoot .ares-boot-inner{
+  width:min(460px,92vw);display:block;
+  border:1px solid rgba(119,230,236,.3);
+  background:rgba(3,14,17,.88);
+  padding:30px 32px 26px;
+  box-shadow:0 0 50px rgba(0,0,0,.45),inset 0 0 45px rgba(119,230,236,.025);
+}
+#aresBoot .ares-boot-logo{color:#77e6ec;font-size:22px;font-weight:600;letter-spacing:.22em;line-height:1.25;white-space:nowrap;}
+#aresBoot .ares-boot-sub{margin-top:8px;color:rgba(199,217,220,.55);font-size:8px;letter-spacing:.13em;line-height:1.5;white-space:nowrap;}
+#aresBoot .ares-boot-rule{height:1px;margin:24px 0 18px;background:linear-gradient(90deg,rgba(119,230,236,.38),rgba(119,230,236,.08));}
+#aresBoot .ares-boot-status{margin-bottom:10px;color:rgba(199,217,220,.55);font-size:9px;letter-spacing:.18em;line-height:1.4;}
+#aresBoot .ares-boot-row{display:flex;align-items:baseline;justify-content:space-between;gap:18px;padding:7px 0;font-size:10px;letter-spacing:.09em;line-height:1.35;white-space:nowrap;}
+#aresBoot .ares-boot-row span{display:block;color:rgba(199,217,220,.58);}
+#aresBoot .ares-boot-row b{display:block;color:#e0f4f5;font-weight:500;font-size:13px;line-height:1.35;}
+#aresBoot .ares-boot-row.incident b{color:#77e6ec;font-size:10px;letter-spacing:.16em;}
+#aresBoot .ares-boot-footer{display:flex;align-items:center;gap:9px;margin-top:25px;color:rgba(119,230,236,.72);font-size:8px;letter-spacing:.13em;line-height:1.4;white-space:nowrap;}
+#aresBoot .boot-dot{display:block;width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:#77e6ec;box-shadow:0 0 10px rgba(119,230,236,.9);}
+@media(max-width:700px){#aresBoot{padding:16px}#aresBoot .ares-boot-inner{padding:24px 20px 22px}#aresBoot .ares-boot-logo{font-size:18px}#aresBoot .ares-boot-row{font-size:8px}}
+</style>
 </head>
-<body>
+<body class="ares-booting">
+
+<div id="aresBoot" class="ares-boot" aria-hidden="true">
+  <div class="ares-boot-inner">
+    <div class="ares-boot-logo">ARES NETWORK</div>
+    <div class="ares-boot-sub">EMERGENCY SURVIVOR COMMUNICATION NETWORK</div>
+
+    <div class="ares-boot-rule"></div>
+
+    <div class="ares-boot-status">NETWORK STATUS</div>
+
+    <div class="ares-boot-row"><span>CONNECTED SETTLEMENTS</span><b>12</b></div>
+    <div class="ares-boot-row"><span>CONFIRMED SURVIVORS</span><b>1,284</b></div>
+    <div class="ares-boot-row"><span>ACTIVE COMMUNICATION SIGNALS</span><b>97</b></div>
+
+    <div class="ares-boot-rule"></div>
+
+    <div class="ares-boot-row incident"><span>INCIDENT STATUS</span><b>UNRESOLVED</b></div>
+
+    <div class="ares-boot-footer">
+      <span class="boot-dot"></span>
+      <span id="bootText">ESTABLISHING SECURE CONNECTION...</span>
+    </div>
+  </div>
+</div>
+
 <div class="app">
 
   <aside class="sidebar">
@@ -1249,7 +1309,14 @@ button { font: inherit; }
       <button class="nav-btn" data-page="settings" data-index="07"><span class="nav-code">07</span>SETTINGS</button>
     </nav>
 
-    <div class="sidebar-bottom">
+<div class="ares-compact-status ares-compact-fallback">
+  <div class="ares-compact-title">NETWORK STATUS</div>
+  <div class="ares-compact-row"><span>SETTLEMENTS</span><b>12</b></div>
+  <div class="ares-compact-row"><span>SURVIVORS</span><b>1,284</b></div>
+  <div class="ares-compact-row"><span>ACTIVE SIGNALS</span><b>97</b></div>
+  <div class="ares-compact-incident"><span>INCIDENT</span><b>UNRESOLVED</b></div>
+</div>
+<div class="sidebar-bottom">
       <div class="status status-panel">
         <div class="status-title"><span class="status-title-icon">↟</span><span>SYSTEM STATUS</span></div>
         <div class="status-row"><span class="status-label">NETWORK</span><span class="status-state state-cyan"><i></i><b>ONLINE</b></span></div>
@@ -2071,6 +2138,274 @@ updateClock(); setInterval(updateClock, 1000);
 #survivorModal .modal-data-row b[style*="color:var(--cyan)"],
 #survivorModal #lastSignalValue {
   color: var(--cyan) !important;
+}
+</style>
+
+
+<div class="ares-network-status" aria-label="ARES network status">
+  <div class="ares-network-title">ARES NETWORK</div>
+  <div class="ares-network-subtitle">Emergency Survivor Communication Network</div>
+  <div class="ares-network-divider"></div>
+  <div class="ares-network-heading">NETWORK STATUS</div>
+  <div class="ares-network-row"><span>CONNECTED SETTLEMENTS</span><strong>12</strong></div>
+  <div class="ares-network-row"><span>CONFIRMED SURVIVORS</span><strong>1,284</strong></div>
+  <div class="ares-network-row"><span>ACTIVE COMMUNICATION SIGNALS</span><strong>97</strong></div>
+  <div class="ares-network-divider"></div>
+  <div class="ares-incident-row"><span>INCIDENT STATUS</span><strong>UNRESOLVED</strong></div>
+</div>
+
+<style id="ares-network-status-style">
+.ares-network-status{display:none!important;}
+
+.ares-network-status{position:fixed;left:24px;bottom:24px;z-index:32;cursor:grab;user-select:none;touch-action:none;width:min(310px,calc(100vw - 48px));padding:18px 20px 17px;border:1px solid rgba(119,230,236,.28);background:rgba(2,12,15,.78);box-shadow:0 0 22px rgba(0,0,0,.28),inset 0 0 28px rgba(119,230,236,.025);backdrop-filter:blur(10px);pointer-events:auto;color:#c7d9dc;font-family:inherit}
+.ares-network-title{color:var(--cyan);font-size:15px;letter-spacing:.18em;font-weight:600}
+.ares-network-subtitle{margin-top:5px;color:rgba(199,217,220,.56);font-size:8px;letter-spacing:.1em;text-transform:uppercase}
+.ares-network-divider{height:1px;margin:15px 0 13px;background:rgba(119,230,236,.15)}
+.ares-network-heading{margin-bottom:10px;color:rgba(199,217,220,.58);font-size:8px;letter-spacing:.18em}
+.ares-network-row,.ares-incident-row{display:flex;align-items:baseline;justify-content:space-between;gap:18px;padding:6px 0}
+.ares-network-row span,.ares-incident-row span{color:rgba(199,217,220,.55);font-size:8px;letter-spacing:.09em}
+.ares-network-row strong{color:#d9f4f6;font-size:12px;font-weight:500;letter-spacing:.06em}
+.ares-incident-row strong{color:var(--cyan);font-size:9px;font-weight:500;letter-spacing:.13em}
+@media(max-width:700px){.ares-network-status{left:14px;bottom:14px;width:min(290px,calc(100vw - 28px));padding:15px 16px}}
+</style>
+
+
+
+<style id="ares-boot-and-sidebar-style">
+/* Compact ARES status integrated into the existing sidebar */
+.ares-compact-status{
+  margin:0 0 16px;
+  padding:12px 0 14px;
+  border-top:1px solid rgba(119,230,236,.16);
+  border-bottom:1px solid rgba(119,230,236,.16);
+}
+.ares-compact-title{
+  color:var(--cyan);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.18em;
+}
+.ares-compact-sub{
+  margin-top:5px;
+  color:rgba(199,217,220,.42);
+  font-size:6px;
+  line-height:1.55;
+  letter-spacing:.08em;
+}
+.ares-compact-line{
+  height:1px;
+  margin:11px 0 9px;
+  background:rgba(119,230,236,.11);
+}
+.ares-compact-label{
+  margin-bottom:7px;
+  color:rgba(199,217,220,.5);
+  font-size:7px;
+  letter-spacing:.15em;
+}
+.ares-compact-row,
+.ares-compact-incident{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:8px;
+  padding:3px 0;
+  font-size:7px;
+  letter-spacing:.08em;
+}
+.ares-compact-row span,
+.ares-compact-incident span{color:rgba(199,217,220,.5)}
+.ares-compact-row b{color:rgba(222,241,243,.92);font-weight:500}
+.ares-compact-incident{
+  margin-top:8px;
+  padding-top:8px;
+  border-top:1px solid rgba(119,230,236,.1);
+}
+.ares-compact-incident b{
+  color:var(--cyan);
+  font-weight:500;
+  letter-spacing:.12em;
+}
+
+/* Initial ARES connection / boot screen */
+.ares-boot{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+  background:rgba(1,7,9,.985);
+  color:#c7d9dc;
+  opacity:1;
+  visibility:visible;
+  transition:opacity .8s ease, visibility .8s ease;
+}
+.ares-boot.is-hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.ares-boot-inner{
+  width:min(460px, 92vw);
+  border:1px solid rgba(119,230,236,.3);
+  background:rgba(3,14,17,.88);
+  padding:30px 32px 26px;
+  box-shadow:0 0 50px rgba(0,0,0,.45), inset 0 0 45px rgba(119,230,236,.025);
+}
+.ares-boot-logo{
+  color:var(--cyan);
+  font-size:22px;
+  font-weight:600;
+  letter-spacing:.22em;
+}
+.ares-boot-sub{
+  margin-top:8px;
+  color:rgba(199,217,220,.55);
+  font-size:8px;
+  letter-spacing:.13em;
+}
+.ares-boot-rule{
+  height:1px;
+  margin:24px 0 18px;
+  background:linear-gradient(90deg, rgba(119,230,236,.38), rgba(119,230,236,.08));
+}
+.ares-boot-status{
+  margin-bottom:10px;
+  color:rgba(199,217,220,.55);
+  font-size:9px;
+  letter-spacing:.18em;
+}
+.ares-boot-row{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:18px;
+  padding:7px 0;
+  font-size:10px;
+  letter-spacing:.09em;
+}
+.ares-boot-row span{color:rgba(199,217,220,.58)}
+.ares-boot-row b{color:#e0f4f5;font-weight:500;font-size:13px}
+.ares-boot-row.incident b{color:var(--cyan);font-size:10px;letter-spacing:.16em}
+.ares-boot-footer{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-top:25px;
+  color:rgba(119,230,236,.72);
+  font-size:8px;
+  letter-spacing:.13em;
+}
+.boot-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 10px rgba(119,230,236,.9);
+  animation:bootPulse 1s ease-in-out infinite alternate;
+}
+@keyframes bootPulse{
+  from{opacity:.35;transform:scale(.8)}
+  to{opacity:1;transform:scale(1.15)}
+}
+@media(max-width:700px){
+  .ares-boot{padding:16px}
+  .ares-boot-inner{padding:24px 20px 22px}
+  .ares-boot-logo{font-size:18px}
+  .ares-boot-row{font-size:8px}
+}
+</style>
+
+<script id="ares-boot-script">
+(function(){
+  const boot = document.getElementById('aresBoot');
+  const bootText = document.getElementById('bootText');
+  if(!boot) return;
+
+  const messages = [
+    'ESTABLISHING SECURE CONNECTION...',
+    'RELAY NODES ONLINE...',
+    'SURVIVOR DATABASE SYNCHRONIZED...',
+    'ACCESS GRANTED.'
+  ];
+  let i = 0;
+
+  const timer = setInterval(() => {
+    i++;
+    if(i < messages.length){
+      if(bootText) bootText.textContent = messages[i];
+    } else {
+      clearInterval(timer);
+      setTimeout(() => boot.classList.add('is-hidden'), 500);
+      setTimeout(() => document.body.classList.remove('ares-booting'), 1300);
+      setTimeout(() => boot.remove(), 1450);
+    }
+  }, 700);
+})();
+</script>
+
+
+<style id="ares-sidebar-mid-status-style">
+/* ARES status: integrated into the menu flow, not the bottom controls */
+.sidebar .ares-compact-status{
+  position:relative !important;
+  left:auto !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  width:100% !important;
+  max-height:none !important;
+  overflow:visible !important;
+  flex:none !important;
+  margin:12px 0 10px !important;
+  padding:10px 26px 10px !important;
+  box-sizing:border-box !important;
+  border-top:1px solid rgba(119,230,236,.16) !important;
+  border-bottom:1px solid rgba(119,230,236,.10) !important;
+  pointer-events:none;
+}
+.sidebar .ares-compact-title{
+  margin-bottom:7px;
+  color:rgba(199,217,220,.52);
+  font-size:7px;
+  letter-spacing:.16em;
+}
+.sidebar .ares-compact-sub{display:none}
+.sidebar .ares-compact-line{display:none}
+.sidebar .ares-compact-label{display:none}
+.sidebar .ares-compact-title,
+.sidebar .ares-compact-row,
+.sidebar .ares-compact-incident{
+  box-sizing:border-box;
+  width:100%;
+}
+.sidebar .ares-compact-row,
+.sidebar .ares-compact-incident{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:8px;
+  padding:3px 0;
+  font-size:7px;
+  letter-spacing:.08em;
+}
+.sidebar .ares-compact-row span,
+.sidebar .ares-compact-incident span{
+  color:rgba(199,217,220,.48);
+}
+.sidebar .ares-compact-row b{
+  color:rgba(222,241,243,.92);
+  font-weight:500;
+}
+.sidebar .ares-compact-incident{
+  margin-top:7px;
+  padding-top:7px;
+  border-top:1px solid rgba(119,230,236,.08);
+}
+.sidebar .ares-compact-incident b{
+  color:var(--cyan);
+  font-weight:500;
+  letter-spacing:.12em;
 }
 </style>
 
