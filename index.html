@@ -1516,27 +1516,64 @@ body.ares-booting .app{visibility:hidden!important;}
         <div class="broadcast-console">
           <article class="broadcast-live panel">
             <div class="broadcast-head">
-              <div><div class="broadcast-kicker"><i class="live-dot"></i> LIVE TRANSMISSION</div><h2>EMERGENCY BROADCAST</h2></div>
-              <div class="broadcast-meta-top"><div>CHANNEL<b>CH-03 / SECURE</b></div><div>PRIORITY<b class="critical">CRITICAL</b></div><div>UPLINK<b>ARES CENTRAL</b></div><div>TIME<b id="broadcastLiveClock">03:42:18</b></div></div>
+              <div><div class="broadcast-kicker" id="broadcastKicker"><i class="live-dot"></i> LIVE TRANSMISSION</div><h2 id="broadcastTitle">EMERGENCY BROADCAST</h2></div>
+              <div class="broadcast-meta-top"><div>CHANNEL<b id="broadcastChannel">CH-03 / SECURE</b></div><div>PRIORITY<b id="broadcastPriority" class="critical">CRITICAL</b></div><div>UPLINK<b id="broadcastUplink">ARES CENTRAL</b></div><div>TIME<b id="broadcastLiveClock">03:42:18</b></div></div>
             </div>
             <div class="broadcast-stream">
-              <div class="wave-box"><span class="wave-label">AUDIO STREAM / LIVE</span><div class="waveform" id="broadcastWaveform"><canvas id="broadcastWaveCanvas" aria-label="Live audio waveform"></canvas></div><div class="stream-state"><span>STREAM</span><b>ACTIVE</b></div></div>
-              <div class="broadcast-copy"><div class="broadcast-kicker"><span>▲</span> PRIORITY CIVIL DEFENSE NOTICE</div><p>서울 전역의 위험 구역 확산이 확인되었습니다. 모든 시민은 현재 위치를 벗어나 지정된 안전 구역으로 즉시 이동하십시오. ARES NETWORK는 감염 개체의 이동 경로와 생존자 신호를 지속적으로 추적하고 있습니다. 추가 지시가 송출될 때까지 모든 통신 채널을 유지하십시오.</p><div class="broadcast-controls"><button class="broadcast-btn active" id="broadcastPlayback" type="button">▸ PLAYBACK</button><button class="broadcast-btn">TRANSCRIPT</button><button class="broadcast-btn">SYSTEM LOG</button></div></div>
+              <div class="wave-box"><span class="wave-label" id="broadcastWaveLabel">AUDIO STREAM / LIVE</span><div class="waveform" id="broadcastWaveform"><canvas id="broadcastWaveCanvas" aria-label="Live audio waveform"></canvas></div><div class="stream-state"><span>STREAM</span><b id="broadcastStreamState">ACTIVE</b></div></div>
+              <div class="broadcast-copy"><div class="broadcast-kicker" id="broadcastNotice"><span>▲</span> PRIORITY ARES NETWORK NOTICE</div><p id="broadcastBody">전 지역 생존자 거점의 통신 상태를 확인하고 있습니다. UNKNOWN 개체의 이동 신호가 다수의 위험 구역에서 감지되었습니다. 현재 활성화된 생존자 통신 신호는 ARES NETWORK를 통해 지속적으로 추적되고 있습니다. 모든 등록 생존자는 손목 장치의 연결 상태를 유지하십시오. 긴급 구조 신호는 가장 가까운 연결 거점으로 자동 전달됩니다.</p><div class="broadcast-controls"><button class="broadcast-btn active" id="broadcastPlayback" type="button">▸ PLAYBACK</button><button class="broadcast-btn" type="button">TRANSCRIPT</button><button class="broadcast-btn" type="button">SYSTEM LOG</button></div></div>
             </div>
-            <div class="broadcast-system"><div><span>SOURCE</span><b>ARES CENTRAL</b></div><div><span>ENCRYPTION</span><b>AES-7 ACTIVE</b></div><div><span>SIGNAL</span><b>98% / STABLE</b></div><div><span>STATUS</span><b>LIVE UPLINK</b></div></div>
+            <div class="broadcast-system"><div><span>SOURCE</span><b id="broadcastSource">ARES CENTRAL</b></div><div><span>ENCRYPTION</span><b id="broadcastEncryption">AES-7 ACTIVE</b></div><div><span>SIGNAL</span><b id="broadcastSignal">98% / STABLE</b></div><div><span>STATUS</span><b id="broadcastStatus">LIVE UPLINK</b></div></div>
           </article>
           <article class="archive-panel panel">
             <div class="archive-head"><h3>TRANSMISSION ARCHIVE</h3><span>TOTAL LOGS: 06</span></div>
-            <table class="broadcast-table"><thead><tr><th>TIME</th><th>TRANSMISSION</th><th>PRIORITY</th><th>STATUS</th></tr></thead><tbody>
-              <tr><td>LIVE</td><td>EMERGENCY BROADCAST</td><td class="prio-critical">CRITICAL</td><td class="log-status log-live">● LIVE</td></tr>
-              <tr><td>02:31:04</td><td>SIGNAL INTERRUPTION</td><td class="prio-high">HIGH</td><td class="log-status log-arch">ARCHIVED</td></tr>
-              <tr><td>01:17:22</td><td>CIVILIAN EVACUATION ORDER</td><td class="prio-medium">MEDIUM</td><td class="log-status log-arch">ARCHIVED</td></tr>
-              <tr><td>00:43:51</td><td>UNKNOWN TRANSMISSION</td><td class="prio-critical">UNKNOWN</td><td class="log-status log-class">CLASSIFIED</td></tr>
-              <tr><td>00:18:09</td><td>SECTOR 07 DISTRESS CALL</td><td class="prio-high">HIGH</td><td class="log-status log-arch">RECOVERED</td></tr>
+            <table class="broadcast-table"><thead><tr><th>TIME</th><th>TRANSMISSION</th><th>PRIORITY</th><th>STATUS</th></tr></thead><tbody id="broadcastArchiveBody">
+              <tr data-broadcast="live" style="cursor:pointer"><td>LIVE</td><td>EMERGENCY BROADCAST</td><td class="prio-critical">CRITICAL</td><td class="log-status log-live">● LIVE</td></tr>
+              <tr data-broadcast="ares01" style="cursor:pointer"><td>02:58:40</td><td>ARES-01 DISTRESS CALL</td><td class="prio-high">HIGH</td><td class="log-status log-arch">RECOVERED</td></tr>
+              <tr data-broadcast="signal" style="cursor:pointer"><td>02:31:04</td><td>SIGNAL INTERRUPTION</td><td class="prio-high">HIGH</td><td class="log-status log-arch">ARCHIVED</td></tr>
+              <tr data-broadcast="evacuation" style="cursor:pointer"><td>01:17:22</td><td>CIVILIAN EVACUATION ORDER</td><td class="prio-high">HIGH</td><td class="log-status log-arch">ARCHIVED</td></tr>
+              <tr data-broadcast="unknown" style="cursor:pointer"><td>00:43:51</td><td>UNKNOWN NEUROLOGICAL INCIDENT</td><td class="prio-critical">UNKNOWN</td><td class="log-status log-class">CLASSIFIED</td></tr>
+              <tr data-broadcast="facility" style="cursor:pointer"><td>00:04:37</td><td>INITIAL FACILITY ALERT</td><td class="prio-critical">CRITICAL</td><td class="log-status log-class">RESTRICTED</td></tr>
             </tbody></table>
           </article>
         </div>
       </section>
+
+      <script>
+      (function(){
+        const broadcasts={
+          live:{kicker:'LIVE TRANSMISSION',title:'EMERGENCY BROADCAST',channel:'CH-03 / SECURE',priority:'CRITICAL',priorityClass:'critical',uplink:'ARES CENTRAL',time:'LIVE',wave:'AUDIO STREAM / LIVE',stream:'ACTIVE',notice:'▲ PRIORITY ARES NETWORK NOTICE',body:'전 지역 생존자 거점의 통신 상태를 확인하고 있습니다. UNKNOWN 개체의 이동 신호가 다수의 위험 구역에서 감지되었습니다. 현재 활성화된 생존자 통신 신호는 ARES NETWORK를 통해 지속적으로 추적되고 있습니다. 모든 등록 생존자는 손목 장치의 연결 상태를 유지하십시오. 긴급 구조 신호는 가장 가까운 연결 거점으로 자동 전달됩니다.',source:'ARES CENTRAL',encryption:'AES-7 ACTIVE',signal:'98% / STABLE',status:'LIVE UPLINK'},
+          ares01:{kicker:'RECOVERED TRANSMISSION',title:'ARES-01 DISTRESS CALL',channel:'ARES-01 / EMERGENCY',priority:'HIGH',priorityClass:'prio-high',uplink:'ARES-01 RELAY',time:'02:58:40',wave:'AUDIO STREAM / RECOVERED',stream:'RECOVERED',notice:'▲ EMERGENCY RELAY SYSTEM',body:'THIS IS ARES-01. EMERGENCY RELAY SYSTEM IS STILL OPERATIONAL. IF YOU CAN RECEIVE THIS SIGNAL, RESPOND. REPEAT: IF YOU CAN RECEIVE THIS SIGNAL, RESPOND.',source:'ARES-01',encryption:'LEGACY RELAY',signal:'61% / UNSTABLE',status:'RECOVERED'},
+          signal:{kicker:'ARCHIVED TRANSMISSION',title:'SIGNAL INTERRUPTION',channel:'CH-01 / EMERGENCY',priority:'HIGH',priorityClass:'prio-high',uplink:'CIVIL DEFENSE',time:'02:31:04',wave:'AUDIO STREAM / ARCHIVED',stream:'ARCHIVED',notice:'▲ NETWORK FAILURE NOTICE',body:'MULTIPLE EMERGENCY CHANNELS OFFLINE. RELAY FAILURE DETECTED. SEVERAL REGIONS HAVE LOST LONG-RANGE COMMUNICATION. DO NOT RELY ON STANDARD EMERGENCY FREQUENCIES.',source:'CIVIL DEFENSE',encryption:'NATIONAL GRID',signal:'34% / DEGRADED',status:'ARCHIVED'},
+          evacuation:{kicker:'ARCHIVED TRANSMISSION',title:'CIVILIAN EVACUATION ORDER',channel:'CH-02 / CIVIL',priority:'HIGH',priorityClass:'prio-high',uplink:'CIVIL DEFENSE',time:'01:17:22',wave:'AUDIO STREAM / ARCHIVED',stream:'ARCHIVED',notice:'▲ URGENT EVACUATION ORDER',body:'긴급 대피령을 발령합니다. 지정된 제한 구역에서 즉시 이탈하십시오. 심각한 신경계 이상 증상을 보이는 인원과의 직접 접촉을 피하고, 안전 구역으로 이동하십시오. 추가 지시가 있을 때까지 구조 및 비상 통신 채널을 유지하십시오.',source:'CIVIL DEFENSE',encryption:'PUBLIC EMERGENCY',signal:'52% / DEGRADED',status:'ARCHIVED'},
+          unknown:{kicker:'CLASSIFIED TRANSMISSION',title:'UNKNOWN NEUROLOGICAL INCIDENT',channel:'INT-07 / RESTRICTED',priority:'UNKNOWN',priorityClass:'prio-critical',uplink:'RESEARCH CONTROL',time:'00:43:51',wave:'AUDIO STREAM / CLASSIFIED',stream:'CLASSIFIED',notice:'▲ INTERNAL INCIDENT REPORT',body:'MULTIPLE SUBJECTS DISPLAY ABNORMAL NEUROLOGICAL ACTIVITY. BIOLOGICAL STATUS: ALIVE. COGNITIVE STATUS: UNKNOWN. FURTHER CLASSIFICATION PENDING.',source:'RESEARCH CONTROL',encryption:'INTERNAL AES-9',signal:'79% / PARTIAL',status:'CLASSIFIED'},
+          facility:{kicker:'RESTRICTED TRANSMISSION',title:'INITIAL FACILITY ALERT',channel:'FAC-01 / INTERNAL',priority:'CRITICAL',priorityClass:'prio-critical',uplink:'FACILITY CONTROL',time:'00:04:37',wave:'AUDIO STREAM / RESTRICTED',stream:'RESTRICTED',notice:'▲ CLINICAL TRIAL SUSPENDED',body:'UNEXPECTED NEURAL RESPONSE DETECTED IN MULTIPLE SUBJECTS. CARDIAC ACTIVITY: ELEVATED. NEURAL ACTIVITY: ABNORMAL. ALL RESEARCH PERSONNEL REPORT TO THE CONTROL UNIT. CLINICAL TRIAL SUSPENDED.',source:'FACILITY CONTROL',encryption:'RESTRICTED',signal:'88% / LOCAL',status:'RESTRICTED'}
+        };
+        const byId=id=>document.getElementById(id);
+        const archive=byId('broadcastArchiveBody');
+        if(!archive) return;
+        archive.addEventListener('click',e=>{
+          const row=e.target.closest('tr[data-broadcast]');
+          if(!row) return;
+          const d=broadcasts[row.dataset.broadcast];
+          if(!d) return;
+          byId('broadcastKicker').innerHTML=(row.dataset.broadcast==='live'?'<i class="live-dot"></i> ':'')+d.kicker;
+          byId('broadcastTitle').textContent=d.title;
+          byId('broadcastChannel').textContent=d.channel;
+          const priority=byId('broadcastPriority'); priority.textContent=d.priority; priority.className=d.priorityClass;
+          byId('broadcastUplink').textContent=d.uplink;
+          byId('broadcastLiveClock').textContent=d.time;
+          byId('broadcastWaveLabel').textContent=d.wave;
+          byId('broadcastStreamState').textContent=d.stream;
+          byId('broadcastNotice').textContent=d.notice;
+          byId('broadcastBody').textContent=d.body;
+          byId('broadcastSource').textContent=d.source;
+          byId('broadcastEncryption').textContent=d.encryption;
+          byId('broadcastSignal').textContent=d.signal;
+          byId('broadcastStatus').textContent=d.status;
+        });
+      })();
+      </script>
 
       <section class="page" id="archive">
         <div class="archive-console">
